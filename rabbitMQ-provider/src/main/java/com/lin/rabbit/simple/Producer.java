@@ -1,6 +1,7 @@
-package com.lin.rabbitmq.one;
+package com.lin.rabbit.simple;
 
-import com.lin.rabbitmq.utils.RabbitUtil;
+import com.lin.rabbitMQ.constant.SimpleConstants;
+import com.lin.rabbitMQ.util.RabbitUtil;
 import com.rabbitmq.client.Channel;
 
 import java.io.IOException;
@@ -12,8 +13,6 @@ import java.util.concurrent.TimeoutException;
  * 生产者：发消息
  */
 public class Producer {
-    public static final String QUEUE_NAME = "hello";
-
     public static void main(String[] args) throws IOException, TimeoutException {
         Channel channel = RabbitUtil.getChannel();
         /**
@@ -24,7 +23,7 @@ public class Producer {
          * 4.是否自动删除 最后一个消费者端开连接以后 该队列是否自动删除 true 自动删除
          * 5.其他参数
          */
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueDeclare(SimpleConstants.QUEUE_NAME, SimpleConstants.DURABLE, SimpleConstants.EXCLUSIVE, SimpleConstants.AUTO_DELETE, null);
         String message = "hello world";
 
         /**
@@ -33,6 +32,6 @@ public class Producer {
          * 3.其他参数值
          * 4.发送消息的消息体
          */
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+        channel.basicPublish("", SimpleConstants.QUEUE_NAME, null, message.getBytes());
     }
 }
