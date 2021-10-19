@@ -4,7 +4,7 @@ package com.lin.rabbitMQ.constant;
  * @Author: LinTao
  * @DateTime: 2021/10/17 21:42
  */
-public class RabbitMQConstants {
+public abstract class RabbitMQConstants {
     public static final String QUEUE_NAME = "hello";
 
     public static final boolean DURABLE=false;
