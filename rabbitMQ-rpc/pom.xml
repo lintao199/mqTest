@@ -2,22 +2,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rabbitMQ</artifactId>
+        <groupId>com.lin.mq</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.lin.mq</groupId>
-    <artifactId>rabbitMQ</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>rabbitMQ-consumer</module>
-        <module>rabbitMQ-provider</module>
-        <module>rabbitMQ-util</module>
-        <module>rabbitMQ-rpc</module>
-    </modules>
+    <artifactId>rabbitMQ-rpc</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.lin.mq</groupId>
+            <artifactId>rabbitMQ-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
