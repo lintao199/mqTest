@@ -2,6 +2,8 @@ package com.lin.rabbit.service;
 
 import com.lin.rabbitMQ.constant.RPCConstants;
 import com.lin.rabbitMQ.util.RabbitUtil;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.CancelCallback;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 import com.rabbitmq.client.Delivery;
@@ -17,6 +19,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class RPCServer {
     public static void main(String[] args) throws IOException, TimeoutException {
+        System.out.println(fbnq(100));
         Channel channel = RabbitUtil.getChannel();
 
         /**
@@ -42,10 +45,41 @@ public class RPCServer {
                 String msg=new String(message.getBody());
 
                 int n=Integer.parseInt(msg);
-
                 //求出第n个
-            }
-        }
+                int ret=fbnq(n);
 
+                AMQP.BasicProperties replyProps = new AMQP.BasicProperties.Builder().correlationId(message.getProperties().getCorrelationId()).build();
+
+                channel.basicPublish("",message.getProperties().getReplyTo(),replyProps,String.valueOf(ret).getBytes());
+
+                //发送确认ack
+                channel.basicAck(message.getEnvelope().getDeliveryTag(),false);
+            }
+        };
+
+        CancelCallback cancelCallback = new CancelCallback() {
+            @Override
+            public void handle(String consumerTag) throws IOException {
+            }
+        };
+
+        //消费者开始接收消息, 等待从 rpc_queue接收请求消息, 不自动确认
+        channel.basicConsume(RPCConstants.QUEUE_NAME, false, deliverCallback, cancelCallback);
+
+    }
+
+    static int fbnq(int n){
+        if (n==1||n==2){
+            return 1;
+        }
+        int one=1;
+        int two=2;
+        while(n>2){
+            int three=one+two;
+            one=two;
+            two=three;
+            n--;
+        }
+        return two;
     }
 }

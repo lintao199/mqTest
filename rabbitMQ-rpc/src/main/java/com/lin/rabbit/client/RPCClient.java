@@ -51,6 +51,7 @@ public class RPCClient {
         DeliverCallback deliverCallback = new DeliverCallback() {
             @Override
             public void handle(String consumerTag, Delivery message) throws IOException {
+                System.out.println("收到消息");
                 if (message.getProperties().getCorrelationId().contentEquals(corrId)) {
                     //把收到的响应数据，放入阻塞集合
                     response.offer(new String(message.getBody()));
