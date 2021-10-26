@@ -57,10 +57,7 @@ public class RPCServer {
             }
         };
 
-        CancelCallback cancelCallback = new CancelCallback() {
-            @Override
-            public void handle(String consumerTag) throws IOException {
-            }
+        CancelCallback cancelCallback = consumerTag -> {
         };
 
         //消费者开始接收消息, 等待从 rpc_queue接收请求消息, 不自动确认
